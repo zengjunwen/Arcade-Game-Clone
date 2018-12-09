@@ -1,13 +1,29 @@
-var collisionPostion={
+//碰撞位置
+let collisionPostion={
     row:3,
     col:2,
     collision:false
 };
-var boundary={
+
+//边界行列值
+let boundary={
     up:0,
     down:4,
     left:0,
     right:4
+}
+
+//
+let portrait={
+    pict:[
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+    ],
+    which:0,
+    len:5
 }
 // 这是我们的玩家要躲避的敌人 
 var Enemy = function(row) {
@@ -66,7 +82,7 @@ Player.prototype.render=function(){
 
 Player.prototype.handleInput=function(i){
     switch(i){
-    case "up":
+    case 'up':
         if(boundary.up==this.row){
             this.row=3;
             this.col=2;
@@ -74,23 +90,32 @@ Player.prototype.handleInput=function(i){
         }
         this.row-=1;
         break;
-    case "down":
+    case 'down':
         if(boundary.down==this.row){
             break;
         }
         this.row+=1;
         break;
-    case "right":
+    case 'right':
         if(boundary.right==this.col){
             break;
         }
         this.col+=1;
         break;
-    case "left":
+    case 'left':
         if(boundary.left==this.col){
             break;
         }
         this.col-=1;
+        break;
+    case 'choiceCharactor':
+        if(portrait.which+1<portrait.len){
+            portrait.which++;
+        }
+        else{
+            portrait.which=0;
+        }
+        this.sprite=portrait.pict[portrait.which];
         break;
     default:
         break;
@@ -117,12 +142,12 @@ var Utils = {
 // 现在实例化你的所有对象
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
-var allEnemies=[];
+let allEnemies=[];
 for (var i = 1; i < 6; i++) {
     allEnemies.push(new Enemy(i%3));
 }
 
-var player=new Player();
+let player=new Player();
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Player.handleInput()
 // 方法里面。你不需要再更改这段代码了。
@@ -131,7 +156,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        49: 'choiceCharactor'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
@@ -140,7 +166,6 @@ document.addEventListener('keyup', function(e) {
 function checkCollision (object1, object2) {
     var delta = 60;
     if (Math.abs(object1.x - Utils.getX(object2.col)) < delta && object1.row == object2.row) {
-        console.log("!!!!");
         return true;
     } else {
         return false;
