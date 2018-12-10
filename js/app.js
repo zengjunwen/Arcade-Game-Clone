@@ -86,6 +86,7 @@ Player.prototype.handleInput=function(i){
         if(boundary.up==this.row){
             this.row=3;
             this.col=2;
+            this.victory();
             break;
         }
         this.row-=1;
@@ -121,7 +122,9 @@ Player.prototype.handleInput=function(i){
         break;
     }
 }
-
+Player.prototype.victory=function(){
+    showStar();
+}
 var Utils = {
     // get X coord by col
     getX: function (col) {
@@ -171,3 +174,21 @@ function checkCollision (object1, object2) {
         return false;
     }
 }
+
+
+var starReq;
+var times=0;
+var showStar=function(){
+    console.log(times);
+    ctx.drawImage(Resources.get('images/Star.png'), Utils.getX(2), Utils.getY(4));
+    times++;
+    if(times==100)
+    {
+        times=0;
+        clearStar();
+    }
+    starReq=window.requestAnimationFrame(showStar);
+ };
+ var clearStar=function(){
+    window.cancelAnimationFrame(starReq);
+ };
