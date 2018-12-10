@@ -190,5 +190,5 @@ var showStar=function(){
     starReq=window.requestAnimationFrame(showStar);
  };
  var clearStar=function(){
-    window.cancelAnimationFrame(starReq);
+    window.cancelAnimationFrame(starReq)();
  };
